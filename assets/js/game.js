@@ -19,7 +19,7 @@ var fight = function(enemyName) {
             // if yes (true), leave fight
             if (confirmSkip) {
                 window.alert(playerName + " has decided to skip this fight. Goodbye!");
-                playerMoney = playerMoney - 10;
+                playerMoney = Math.max(0, playerMoney - 10);
                 console.log("playerMoney", playerMoney);
                 break;
             } else {
@@ -29,7 +29,8 @@ var fight = function(enemyName) {
 
         if (promptFight === "FIGHT" || promptFight === "fight") {
             // player attacks enemy
-            enemyHealth = enemyHealth - playerAttack;
+            var damage = randomNumber(playerAttack - 3, playerAttack);
+            enemyHealth = Math.max(0, enemyHealth - damage);
             console.log(`${playerName} attacked ${enemyName}. ${enemyName} now has ${enemyHealth} health remaining.`);
 
             //check enemy's health
@@ -42,7 +43,8 @@ var fight = function(enemyName) {
             }
             
             // enemy attacks player
-            playerHealth = playerHealth - enemyAttack;
+            var damage = randomNumber(enemyAttack - 3, enemyAttack);
+            playerHealth = Math.max(0, playerHealth - damage);
             console.log(`${enemyName} attacked ${playerName}. ${playerName} now has ${playerHealth} health remaining.`);
 
             //check player's health
@@ -59,10 +61,10 @@ var fight = function(enemyName) {
 };
 
 var startGame = function() {
-            // reset player stats
-            playerHealth = 100;
-            playerAttack = 10;
-            playerMoney = 10;
+        // reset player stats
+        playerHealth = 100;
+        playerAttack = 10;
+        playerMoney = 10;
 
     for (var i = 0; i < enemyNames.length; i++) {
         if (playerHealth > 0) {
@@ -70,7 +72,7 @@ var startGame = function() {
 
             var pickedEnemyName = enemyNames[i];
 
-            enemyHealth = 50;
+            enemyHealth = randomNumber(40, 60);
 
             fight(pickedEnemyName);
 
@@ -145,5 +147,11 @@ var shop = function() {
             break;
     }
 };
+
+var randomNumber = function(min, max) {
+    var value = Math.floor(Math.random() * (max - min + 1) + min);
+
+    return value;
+}
 
 // startGame();
